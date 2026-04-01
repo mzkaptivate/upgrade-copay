@@ -1,6 +1,6 @@
 """
-Zarena's 90-Day Calendar — April 2026 Google Calendar Builder
-Week 1 of 90-day cycle.
+Zarena's 90-Day Calendar — Google Calendar Builder
+April 1 – June 29, 2026  (90 days, Week 1 of cycle)
 
 SETUP:
   1. Go to https://console.cloud.google.com/
@@ -47,12 +47,12 @@ SCOPES = ["https://www.googleapis.com/auth/calendar"]
 # 5=Banana    6=Tangerine(orange)  7=Peacock(blue)  8=Graphite(gray)
 # 9=Blueberry(dark blue)  10=Basil(dark green)  11=Tomato(red)
 # ---------------------------------------------------------------------------
-COLOR_HEALTH   = "2"   # Sage green  — movement / yoga / gym / pilates / walk
-COLOR_ZELLEVON = "9"   # Blueberry   — ZelleVon AI Systems
-COLOR_MANIFEST = "4"   # Flamingo    — She Manifest Co.
-COLOR_CONTENT  = "6"   # Tangerine   — content filming / posting / editing
-COLOR_WRITING  = "3"   # Grape       — writing / journaling / scripts / copy
-COLOR_WINDDOWN = "8"   # Graphite    — wind-down ritual / sleep
+COLOR_HEALTH   = "10"  # Basil (dark green)  — movement / yoga / gym / pilates / walk
+COLOR_ZELLEVON = "9"   # Blueberry           — ZelleVon AI Systems
+COLOR_MANIFEST = "2"   # Sage (green)        — She Manifest Co. (money activities)
+COLOR_CONTENT  = "4"   # Flamingo            — content filming / posting / editing
+COLOR_WRITING  = "1"   # Lavender            — writing / journaling / scripts / copy
+COLOR_WINDDOWN = "5"   # Banana (yellow)     — wind-down ritual / sleep
 
 
 # ---------------------------------------------------------------------------
@@ -286,12 +286,12 @@ def get_calendar_service():
 
 
 # ---------------------------------------------------------------------------
-# MAIN — build and push all April 2026 events
+# MAIN — build and push 90 days: April 1 – June 29, 2026
 # ---------------------------------------------------------------------------
 
 def main():
     print("=" * 60)
-    print("  Zarena's 90-Day Calendar — April 2026 Builder")
+    print("  Zarena's 90-Day Calendar — Apr 1 – Jun 29, 2026")
     print("=" * 60)
 
     # ------------------------------------------------------------------
@@ -300,8 +300,8 @@ def main():
     print("\n⚠️  BEFORE PUSHING — Please confirm with Zarena:")
     print("  1. Saturday schedule: Gym (9:30–10:30am) and Yoga Series")
     print("     (10:00–11:15am) OVERLAP. The script creates both blocks")
-    print("     on all 4 Saturdays (Apr 4, 11, 18, 25) and flags them.")
-    print("     Update the script once Zarena clarifies the Saturday plan.")
+    print("     on all 13 Saturdays and flags them.")
+    print("     Update saturday_events() once Zarena clarifies.")
     print()
     print("  2. Friday yoga time is UNCONFIRMED.")
     print("     Currently set to 8:30–9:00am as a placeholder.")
@@ -320,18 +320,20 @@ def main():
     print("Connected.\n")
 
     # ------------------------------------------------------------------
-    # Iterate April 1–30, 2026
+    # Iterate 90 days: April 1 – June 29, 2026
     # ------------------------------------------------------------------
+    start_date = datetime.date(2026, 4, 1)
     total_created = 0
     errors = []
 
-    for day_num in range(1, 31):
-        date = datetime.date(2026, 4, day_num)
+    for offset in range(90):
+        date = start_date + datetime.timedelta(days=offset)
         weekday = date.weekday()           # 0=Mon … 6=Sun
         template_fn = DAY_TEMPLATES[weekday]
         events = template_fn(date)
 
-        print(f"April {day_num:2d} ({DAY_NAMES[weekday]}) — {len(events)} events", end="")
+        label = date.strftime("%b %d")
+        print(f"{label} ({DAY_NAMES[weekday]:<9}) — {len(events)} events", end="")
 
         day_count = 0
         for event in events:
@@ -339,7 +341,7 @@ def main():
                 service.events().insert(calendarId=CALENDAR_ID, body=event).execute()
                 day_count += 1
             except HttpError as e:
-                errors.append(f"  April {day_num} '{event['summary']}': {e}")
+                errors.append(f"  {label} '{event['summary']}': {e}")
                 print("✗", end="", flush=True)
 
         total_created += day_count
@@ -350,6 +352,7 @@ def main():
     # ------------------------------------------------------------------
     print("\n" + "=" * 60)
     print(f"  ✅  Done! {total_created} events pushed to Google Calendar.")
+    print(f"       90-day cycle: April 1 – June 29, 2026")
     if errors:
         print(f"\n  ⚠️  {len(errors)} error(s):")
         for e in errors:
