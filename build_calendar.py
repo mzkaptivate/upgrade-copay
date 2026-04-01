@@ -175,13 +175,12 @@ def thursday_events(date: datetime.date):
 def friday_events(date: datetime.date):
     """Venus Day — Light / Posting"""
     return [
-        make_event(date, "07:30", "08:15", "☀️ Wake + Tea",                COLOR_WRITING),
-        make_event(date, "08:15", "08:30", "🚗 Travel to Gentle Yoga",     COLOR_HEALTH),
-        make_event(date, "08:30", "09:00", "🧘 Gentle Yoga ⚠️ TIME TBC",  COLOR_HEALTH,
-                   "⚠️ CONFIRM WITH ZARENA: exact class time still needed. Travel is 15 min each way."),
-        make_event(date, "09:00", "09:15", "🚗 Travel Home from Yoga",     COLOR_HEALTH),
-        make_event(date, "09:00", "10:00", "🌸 Self-Care + Breakfast"),
-        make_event(date, "10:00", "13:00", "📲 Content Posting + Engagement",
+        make_event(date, "07:30", "08:45", "☀️ Wake + Tea",                COLOR_WRITING),
+        make_event(date, "08:45", "09:00", "🚗 Travel to Gym",             COLOR_HEALTH),
+        make_event(date, "09:00", "10:00", "🏋️ Gym",                      COLOR_HEALTH),
+        make_event(date, "10:00", "10:15", "🚗 Travel Home from Gym",      COLOR_HEALTH),
+        make_event(date, "10:15", "11:00", "🌸 Self-Care + Breakfast"),
+        make_event(date, "11:00", "13:00", "📲 Content Posting + Engagement",
                    COLOR_CONTENT,
                    "Schedule, publish, community engagement — all platforms"),
         make_event(date, "13:00", "14:00", "🥗 Lunch"),
@@ -196,25 +195,11 @@ def friday_events(date: datetime.date):
 
 
 def saturday_events(date: datetime.date):
-    """Saturn Day — Soft
-    ⚠️ FLAG: Gym (9:30–10:30am) and Yoga Series (10:00–11:15am) overlap.
-    Both are included below. Zarena should confirm which applies each Saturday
-    or whether they alternate.
-    """
+    """Saturn Day — Soft"""
     return [
         make_event(date, "08:00", "09:00", "☀️ Wake + Tea"),
-        # --- GYM block (confirm with Zarena) ---
-        make_event(date, "09:00", "09:30", "🚗 Travel to Gym ⚠️ CONFIRM",  COLOR_HEALTH,
-                   "⚠️ CONFIRM WITH ZARENA: Saturday gym and yoga overlap. "
-                   "Gym travel 15 min each way. Confirm if gym or yoga (or alternating)."),
-        make_event(date, "09:30", "10:30", "🏋️ Gym ⚠️ OVERLAP — CONFIRM",  COLOR_HEALTH,
-                   "⚠️ OVERLAP: Yoga Series starts 10:00am. Confirm with Zarena which applies this Saturday."),
-        # --- YOGA SERIES block ---
-        make_event(date, "09:30", "10:00", "🚗 Travel to Yoga Series ⚠️ CONFIRM", COLOR_HEALTH,
-                   "⚠️ CONFIRM WITH ZARENA: 30 min travel to Yoga Series. "
-                   "This overlaps with gym block — clarify schedule."),
-        make_event(date, "10:00", "11:15", "🧘 Yoga Series ⚠️ OVERLAP — CONFIRM", COLOR_HEALTH,
-                   "⚠️ OVERLAP: Gym block runs 9:30–10:30am. Confirm with Zarena."),
+        make_event(date, "09:30", "10:00", "🚗 Travel to Yoga Series",     COLOR_HEALTH),
+        make_event(date, "10:00", "11:15", "🧘 Yoga Series",               COLOR_HEALTH),
         make_event(date, "11:15", "11:45", "🚗 Travel Home from Yoga",     COLOR_HEALTH),
         make_event(date, "12:00", "14:00", "🛒 Lunch + Errands"),
         make_event(date, "15:00", "17:00", "🌿 Nature + Family"),
@@ -297,15 +282,9 @@ def main():
     # ------------------------------------------------------------------
     # ⚠️  CONFIRMATION WARNINGS printed before pushing
     # ------------------------------------------------------------------
-    print("\n⚠️  BEFORE PUSHING — Please confirm with Zarena:")
-    print("  1. Saturday schedule: Gym (9:30–10:30am) and Yoga Series")
-    print("     (10:00–11:15am) OVERLAP. The script creates both blocks")
-    print("     on all 13 Saturdays and flags them.")
-    print("     Update saturday_events() once Zarena clarifies.")
-    print()
-    print("  2. Friday yoga time is UNCONFIRMED.")
-    print("     Currently set to 8:30–9:00am as a placeholder.")
-    print("     Update friday_events() once confirmed.")
+    print("\nSchedule confirmed:")
+    print("  • Saturday: Yoga Series only (9:30am travel, 10:00–11:15am class)")
+    print("  • Friday: Gym 9:00–10:00am (leave 8:45am, return 10:15am)")
     print()
     answer = input("Type YES to continue pushing to Google Calendar, or NO to exit: ").strip().upper()
     if answer != "YES":
