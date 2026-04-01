@@ -47,10 +47,10 @@ SCOPES = ["https://www.googleapis.com/auth/calendar"]
 # 5=Banana    6=Tangerine(orange)  7=Peacock(blue)  8=Graphite(gray)
 # 9=Blueberry(dark blue)  10=Basil(dark green)  11=Tomato(red)
 # ---------------------------------------------------------------------------
-COLOR_HEALTH   = "10"  # Basil (dark green)  — movement / yoga / gym / pilates / walk
+COLOR_HEALTH   = "4"   # Flamingo (fuschia)  — movement / yoga / gym / pilates / walk
 COLOR_ZELLEVON = "9"   # Blueberry           — ZelleVon AI Systems
 COLOR_MANIFEST = "2"   # Sage (green)        — She Manifest Co. (money activities)
-COLOR_CONTENT  = "4"   # Flamingo            — content filming / posting / editing
+COLOR_CONTENT  = "6"   # Tangerine (orange)  — content filming / posting / editing
 COLOR_WRITING  = "1"   # Lavender            — writing / journaling / scripts / copy
 COLOR_WINDDOWN = "5"   # Banana (yellow)     — wind-down ritual / sleep
 
