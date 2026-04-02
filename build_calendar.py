@@ -3,31 +3,17 @@ Zarena's 90-Day Calendar — Google Calendar Builder
 April 1 – June 29, 2026  (90 days, Week 1 of cycle)
 
 SETUP:
-  1. Go to https://console.cloud.google.com/
-  2. Create a project, enable "Google Calendar API"
-  3. Create OAuth 2.0 credentials (Desktop app), download as credentials.json
-  4. Place credentials.json in this directory
-  5. pip install -r requirements.txt
-  6. python build_calendar.py
-
-  On first run, a browser window opens for Google sign-in.
-  A token.json will be saved so you won't be re-prompted.
-
-FLAGS FOR ZARENA:
-  - Saturday gym and yoga OVERLAP (see notes in SATURDAY template below).
-    The script creates BOTH blocks but marks them with a note.
-    Please confirm which Saturdays are gym-only vs yoga-only.
-  - Friday yoga TIME is unconfirmed. Currently set to 8:30–9:00am.
-    Please confirm the actual class time.
+  1. Place service_account.json in this directory
+  2. Share your Google Calendar with the service account email
+  3. pip3 install -r requirements.txt
+  4. python3 build_calendar.py
 """
 
 import datetime
 import os
 import sys
 
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
+from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
@@ -35,10 +21,10 @@ from googleapiclient.errors import HttpError
 # CONFIG
 # ---------------------------------------------------------------------------
 
-CALENDAR_ID = "primary"          # Change to a specific calendar ID if needed
-TIMEZONE = "America/Los_Angeles"  # Change to Zarena's timezone
+CALENDAR_ID = "primary"           # Change to Zarena's calendar ID if needed
+TIMEZONE = "America/Chicago"      # Central Time
 
-# Google Calendar API scope
+SERVICE_ACCOUNT_FILE = "service_account.json"
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
 # ---------------------------------------------------------------------------
@@ -247,26 +233,12 @@ DAY_NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
 # ---------------------------------------------------------------------------
 
 def get_calendar_service():
-    creds = None
-    if os.path.exists("token.json"):
-        creds = Credentials.from_authorized_user_file("token.json", SCOPES)
-
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            if not os.path.exists("credentials.json"):
-                print("\n❌  credentials.json not found.")
-                print("    1. Go to https://console.cloud.google.com/")
-                print("    2. Enable Google Calendar API")
-                print("    3. Create OAuth 2.0 credentials (Desktop app)")
-                print("    4. Download as credentials.json and place it here")
-                sys.exit(1)
-            flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
-            creds = flow.run_local_server(port=0)
-        with open("token.json", "w") as token:
-            token.write(creds.to_json())
-
+    if not os.path.exists(SERVICE_ACCOUNT_FILE):
+        print(f"\n❌  {SERVICE_ACCOUNT_FILE} not found.")
+        print("    Place your service_account.json file in this folder.")
+        sys.exit(1)
+    creds = service_account.Credentials.from_service_account_file(
+        SERVICE_ACCOUNT_FILE, scopes=SCOPES)
     return build("calendar", "v3", credentials=creds)
 
 
@@ -282,9 +254,8 @@ def main():
     # ------------------------------------------------------------------
     # ⚠️  CONFIRMATION WARNINGS printed before pushing
     # ------------------------------------------------------------------
-    print("\nSchedule confirmed:")
-    print("  • Saturday: Yoga Series only (9:30am travel, 10:00–11:15am class)")
-    print("  • Friday: Gym 9:00–10:00am (leave 8:45am, return 10:15am)")
+    print("\nSchedule: Saturday Yoga Series + Friday Gym confirmed.")
+    print("Timezone: Central (America/Chicago)")
     print()
     answer = input("Type YES to continue pushing to Google Calendar, or NO to exit: ").strip().upper()
     if answer != "YES":
