@@ -21,7 +21,7 @@ from googleapiclient.errors import HttpError
 # CONFIG
 # ---------------------------------------------------------------------------
 
-CALENDAR_ID = "primary"           # Change to Zarena's calendar ID if needed
+CALENDAR_ID = "mattiewhitfield@gmail.com"
 TIMEZONE = "America/Chicago"      # Central Time
 
 SERVICE_ACCOUNT_FILE = "service_account.json"
