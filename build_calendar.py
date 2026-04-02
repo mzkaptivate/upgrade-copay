@@ -307,11 +307,6 @@ def main():
         print(f"\n  ⚠️  {len(errors)} error(s):")
         for e in errors:
             print(e)
-    print()
-    print("  Reminders:")
-    print("  • Saturday gym/yoga overlap — confirm with Zarena")
-    print("  • Friday yoga time — confirm with Zarena")
-    print("  • Adjust TIMEZONE in script if needed (currently:", TIMEZONE + ")")
     print("=" * 60)
 
 
